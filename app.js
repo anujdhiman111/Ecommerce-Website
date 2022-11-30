@@ -161,7 +161,7 @@ app.get("/myAccount",function(req,res){
 
 app.get("/getData",function(req,res){
 	dp.find({},function(err,data){
-		res.end(data);
+		res.send(data);
 	})
 })
 
