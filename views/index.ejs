@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ecommerce Website</title>
+    <link rel  = "stylesheet" href="main.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <% if(openPage === "Home"){ %>
+        <div class="links">
+          <%- include('header',{page:openPage,login:logged,name:name})%>
+        </div>
+        <div class="heading">
+          <h1>Welcome to the <%= openPage %> Page</h1>
+        </div>
+        <% if(logged === true){ %>
+          <% console.log("12") %> 
+          <h1> <%= name %> </h1>
+          <script>
+            document.getElementsByClassName("login")[0].style["display"] = "none"
+            document.getElementsByClassName("signup")[0].style["display"] = "none"
+            document.getElementsByClassName("logout")[0].style["display"] = "inline-block"
+            document.getElementsByClassName("Cart")[0].style["display"] = "inline-block"
+          </script>
+        <%} else{ %>
+          <script>
+            document.getElementsByClassName("logout")[0].style["display"] = "none"
+            document.getElementsByClassName("Cart")[0].style["display"] = "none"
+          </script>
+          <% } %>
+          <div class="container1">
+            <%for(let i = 0;i<5;i++){%>
+              <div class="gridContent">
+                <img src="<%=data1[i].picName%>"/>
+                <h1><%=data1[i].inputText%></h1>
+                <p>$<%=data1[i].inputPrice%></p>
+                <button id = "<%=data1[i].id%>" onclick="showDetails(event)">View Details</button>
+                <button id = "cart<%=data1[i].id%>" onclick="addToCart(event)">Add To Cart</button>
+              </div>
+            <%}%>
+          </div>
+      <% }%>
+      
+
+      <% if(openPage === "SignUp"){ %>
+        <%- include('signUp')%>
+      <%}%>
+
+      <% if(openPage === "Login"){%>
+        <%- include('login')%>
+      <%}%>
+
+
+      <%if(openPage == "myProfile"){%>
+        <%- include('header',{page:openPage,name:name})%>
+        <%if(logged === "true"){%>
+          <h1> Hello <%=name%> </h1>
+          <h3>Want to change password?</h3>
+          <a href="/getForgotPage">Click here for change password</a>
+          <script>
+            document.getElementsByClassName("login")[0].style["display"] = "none"
+            document.getElementsByClassName("signup")[0].style["display"] = "none"
+            document.getElementsByClassName("profile")[0].style["display"] = "inine-block"
+            document.getElementsByClassName("Cart")[0].style["display"] = "inline-block"
+        </script>
+      <%}%>
+    <%}%> 
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>

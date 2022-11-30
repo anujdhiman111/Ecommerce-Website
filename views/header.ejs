@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="links">
+                <a class="logout" href="/logout">Logout</a>
+                <a class="login" href="/login">Login</a>
+                <a class="signup" href="/signUp">SignUp</a>
+                <%if(page === "Home"){%>
+                    <%if(login === true){%> 
+                        <a class="profile" href="/myAccount"><%=name%> </a>
+                    <%}else{%>
+                        <a class="profile" href="/myAccount">My Profile</a>
+                    <%}%>  
+                <%}%>     
+                <%if(page === ""){%>
+                    <%if(login === true){%> 
+                        <a class="profile" href="/myAccount"><%=name%> </a>
+                    <%}else{%>
+                        <a class="profile" href="/myAccount">My Profile</a>
+                    <%}%>  
+                <%}%>     
+                <a class="Cart" href="/myCart">My Cart</a>
+        </div>
+    </header>
+</body>
+</html>
+

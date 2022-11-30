@@ -1,0 +1,17 @@
+body{
+    margin:0px;
+}
+
+.container1{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+ul{
+    text-align: center;
+}
+
+li{
+    display:inline-block;
+    padding: 0px 12px;
+}
