@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <div class="links">
+<header>
+    <div class="links">
+        <div class="webLogo">
+            <a href="/"><img src="https://www.freepnglogos.com/uploads/flipkart-logo-png/flipkart-com-logo-internet-ltd-state-of-kerala-10.png" width="200" alt="Flipkart logo" /></a>
+        </div>
+        <div class="webLinks">
+            <%if(page === "Cart"){%>
+                <a class="profile" href="/">Home</a>
+            <%}else{%> 
                 <a class="logout" href="/logout">Logout</a>
                 <a class="login" href="/login">Login</a>
                 <a class="signup" href="/signUp">SignUp</a>
@@ -27,8 +25,7 @@
                     <%}%>  
                 <%}%>     
                 <a class="Cart" href="/myCart">My Cart</a>
+            <%}%>
         </div>
-    </header>
-</body>
-</html>
-
+    </div>
+</header>

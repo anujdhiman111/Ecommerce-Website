@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel  = "stylesheet" href="main.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
 </head>
 <body>
-    <div class="container">
+    <%- include('header',{page:"Cart"})%>
+    <div class="container1 cartContainer">
         <%if(cartFlag === true){%>
         <%for(let i = 0;i<data.length;i++){%>
-            <div class="cartProduct">
+            <div class="cartProduct gridContent">
                 <img src="<%=data[i].img%>"/>
-                <h1><%=data[i].name%></h1>
+                <h2><%=data[i].name%></h2>
                 <p id="pg<%=data[i].id1%>"><%=data[i].price%></p>
                 <div class="buttons">
                     <button id="b1<%=data[i].id1%>" type="button" onclick ="btnClicked(event)" >+</button>

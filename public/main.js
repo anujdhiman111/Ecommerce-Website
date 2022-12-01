@@ -34,14 +34,17 @@ function changeContent(event){
       let newData = JSON.parse(request.responseText);
       newData.forEach(function(data){
         let div = document.createElement("div");
+        div.setAttribute("class","gridContent")
         let img = document.createElement("img");
         img.src = data.picName
-        let h1 = document.createElement("h1");
+        let h1 = document.createElement("h2");
         let p = document.createElement("p");
         p.innerText = `$ ${data.inputPrice}`
         h1.innerText = data.inputText
         let button = document.createElement("button");
+        button.setAttribute("class","viewDetail")
         let cartButton = document.createElement("button");
+        cartButton.setAttribute("class","addToCart")
         button.innerText = "View Details";
         cartButton.innerText = "Add To Cart";
         button.setAttribute("id",data.id);

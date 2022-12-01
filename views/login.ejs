@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <div class="links">
-        <%- include('header',{page:openPage})%>
-    </div>
+<div class="loginSection authSection">
     <div class="heading">
-    <h1>Welcome to the <%= openPage %> Page</h1>
+        <h1>Welcome to the <%= openPage %> Page</h1>
     </div>
     <div class="form">
         <form method="POST" action = "/login">
-          <input type="email" name = "username" placeholder="Email" required/>
-          <input type="password" name = "password" minlength = "8" placeholder="Password" required/>
-          <input type="submit" name = "submit" value="Submit"/>
+        <div class="emailSection">
+            <input class="emailField" type="email" name = "username" placeholder="Email" required/>
+        </div>
+        <div class="passwdSection">
+            <input type="password" class="passwdField" name = "password" minlength = "8" placeholder="Password" required/>
+        </div>
+        <input class="submitBtn" type="submit" name = "submit" value="Submit"/>
         </form>
         <a href="/signUp">SignUp here</a>
-      </div>
-      <script>
-        document.getElementsByClassName("links")[0].style["display"] = "none"
-      </script>
-</body>
-</html>
+    </div>
+</div>

@@ -7,7 +7,6 @@ let fs = require('fs');
 const mongoose = require("mongoose");
 const {MongoClient} = require('mongodb')
 const upload = multer({dest:'uploads/'})
-const sendEmail = require('./methods/sendEmail');
 key = 0;
 
 const port = 3001
@@ -74,7 +73,7 @@ app.get('/', (req, res) => {
 app.route('/signUp').get(function(req, res){
 	if(req.session.logged != true){
 		let page = "SignUp";
-		res.render("index.ejs",{name:myName,openPage:page});
+		res.render("index.ejs",{openPage:page});
 	}
 	else{
 		res.redirect("/")
@@ -114,7 +113,7 @@ app.route('/signUp').get(function(req, res){
 app.route('/login').get(function(req, res){
 	if(req.session.logged != true){
 		let page = "Login";
-		res.render("index.ejs",{name:myName,openPage:page,logged:"false"});
+		res.render("index.ejs",{openPage:page,logged:"false"});
 	}
 	else{
 		res.redirect("/")
@@ -210,16 +209,6 @@ app.post("/changePassword",function(req,res){
 		ap.updateOne({username:req.body.username},{password: password1},function(err,result){
 						console.log(result)
 					})
-
-		// newData.forEach(function(datas){
-		// 	if(datas.userName == email){
-		// 		datas.password = password;
-		// 		ap.updateOne({username:datas.userName},{password:datas.password},function(err,result){
-		// 			console.log(result)
-		// 		})
-		// 	}
-		// })
-
 	})
 	res.send("Successfull");
 })
@@ -253,6 +242,10 @@ app.post("/addData",function(req,res){
 
 app.get("/myCart",function(req,res){
 	 hp.findOne({userName:req.session.userName},function(err,data){
+		if(data === null){
+			res.render("cart.ejs",{data:null,cartFlag:false});
+			return;
+		}
 		let finalData = data.userProduct.length;
 		if(finalData){
 			let Data = data.userProduct;

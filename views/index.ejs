@@ -7,15 +7,11 @@
   <body>
     <div class="container">
       <% if(openPage === "Home"){ %>
-        <div class="links">
-          <%- include('header',{page:openPage,login:logged,name:name})%>
-        </div>
+        <%- include('header',{page:openPage,login:logged,name:name})%>
         <div class="heading">
           <h1>Welcome to the <%= openPage %> Page</h1>
         </div>
         <% if(logged === true){ %>
-          <% console.log("12") %> 
-          <h1> <%= name %> </h1>
           <script>
             document.getElementsByClassName("login")[0].style["display"] = "none"
             document.getElementsByClassName("signup")[0].style["display"] = "none"
@@ -32,10 +28,10 @@
             <%for(let i = 0;i<5;i++){%>
               <div class="gridContent">
                 <img src="<%=data1[i].picName%>"/>
-                <h1><%=data1[i].inputText%></h1>
+                <h2><%=data1[i].inputText%></h2>
                 <p>$<%=data1[i].inputPrice%></p>
-                <button id = "<%=data1[i].id%>" onclick="showDetails(event)">View Details</button>
-                <button id = "cart<%=data1[i].id%>" onclick="addToCart(event)">Add To Cart</button>
+                <button id = "<%=data1[i].id%>" class="viewDetail" onclick="showDetails(event)">View Details</button>
+                <button id = "cart<%=data1[i].id%>" class="addToCart" onclick="addToCart(event)">Add To Cart</button>
               </div>
             <%}%>
           </div>

@@ -1,10 +1,13 @@
 body{
     margin:0px;
+    font-family:  monospace,'Courier New', Courier;
+    min-height: 96vh;
 }
 
 .container1{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 20px;
 }
 
 ul{
@@ -14,4 +17,104 @@ ul{
 li{
     display:inline-block;
     padding: 0px 12px;
+}
+
+.links{
+    min-height: 3rem;
+    /* max-height: 5rem; */
+    background-color: cadetblue;
+    /* text-align: right; */
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+.logout,.login,.signup,.profile,.Cart{
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+.logout:hover,.login:hover,.signup:hover,.profile:hover,.Cart:hover{
+    color: black;
+}
+
+.heading{
+    text-align: center;
+}
+
+.gridContent{
+    text-align: center;
+}
+
+.viewDetail{
+    padding:10px 12px;
+    border-radius: 4px;
+    background-color: grey;
+    border: none;
+    color: azure;
+    font-weight: bold;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.addToCart{
+    padding:10px 12px;
+    border-radius: 4px;
+    background-color: green;
+    border: none;
+    color: azure;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.webLinks{
+    text-align: right;
+    padding: 22px 15px 0px;
+}
+
+.gridContent img{
+    height: 225px;
+    width: 225px;
+    object-fit: contain;
+}
+
+.cartContainer{
+    margin-top: 5%;
+}
+
+.authSection{
+    height: 100vh;
+    text-align: center;
+    background-image: linear-gradient(to right,#5959de,pink);
+    color: #fff;
+    padding: 25px 0px;
+}
+
+.form{
+    min-height: 30vh;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 30%;
+    margin: auto;
+    max-height: 40vh;
+}
+
+form{
+    padding: 25px 0px;
+}
+
+.emailSection,.passwdSection{
+    margin-bottom: 1%;
+}
+
+.emailField,.passwdField,.submitBtn,.textField{
+    width: 90%;
+    border: none;
+    border-bottom: 1px solid grey;
+    /* background-color: #fff; */
+    padding: 10px 0px;
+}
+
+.heading h1{
+    margin-top: 0;
 }
