@@ -10,7 +10,7 @@ function onLoad(){
     request.addEventListener("load",function(){
       let data = JSON.parse(request.responseText);
       let ul = document.createElement("ul");
-      let page = Math.floor(data.length/5);
+      let page = Math.ceil(data.length/5);
       for(let i = 1;i<=page;i++){
         let a = document.createElement("a");
         a.style["cursor"] = "pointer"
@@ -47,8 +47,8 @@ function changeContent(event){
         cartButton.setAttribute("class","addToCart")
         button.innerText = "View Details";
         cartButton.innerText = "Add To Cart";
-        button.setAttribute("id",data.id);
-        cartButton.setAttribute("id",`cart${data.id}`);
+        button.setAttribute("id",data._id);
+        cartButton.setAttribute("id",`cart${data._id}`);
         button.addEventListener('click',showDetails);
         cartButton.addEventListener('click',addToCart);
         div.append(img,h1,p,button,cartButton);
@@ -58,15 +58,13 @@ function changeContent(event){
   }
     
   function showDetails(event){
-    // console.log(event)
     let request = new XMLHttpRequest();
-    request.open("GET","/getData");
-    request.send();
-
+    request.open("POST","/getData");
+    request.setRequestHeader("Content-Type","application/json");
+    request.send(JSON.stringify({key:event.target.id}));
     request.addEventListener("load",function(){
       let data = JSON.parse(request.responseText);
-      // console.log(data);
-      alert(data[event.target.id].desc)
+      alert(data)
     });
   }
 
@@ -76,6 +74,11 @@ function changeContent(event){
     request.setRequestHeader("Content-Type","application/json");
     request.send(JSON.stringify({name:event.target.parentNode.children[1].innerText,price:event.target.parentNode.children[2].innerText,img:event.target.parentNode.children[0].src.slice(22),id1 :event.target.id,quantity:1}));
     request.addEventListener("load",function(){
-      window.location.href = request.responseText
+      if(request.responseText === "/"){
+        window.location.href = request.responseText
+      }
+      else{
+        window.location.href = "/login";
+      }
     })
   }

@@ -24,7 +24,16 @@ app.use(session({
 	secret:'Pro Programmer',
 	resave:false,
 	saveUninitialized:true,
+	logged:false,
+	admin:false,
+	clickAdmin:false
 }))
+
+let admin = {
+	name:"Anuj",
+	user:"anuj@gmail.com",
+	password:"anujdhiman"
+}
 
 mongoose.connect('mongodb://localhost:27017/test').
   catch(error => handleError(error));
@@ -39,7 +48,7 @@ mongoose.connect('mongodb://localhost:27017/test').
 	inputText : String,
 	inputPrice:Number,
 	picName : String,
-	id:Number,
+	// id:Number,
 	desc:String
 });
 
@@ -56,19 +65,42 @@ const mp = mongoose.model('cartSchema',{
 	quantity:Number
 })
 
-
 app.get('/', (req, res) => {
+	req.session.clickAdmin = undefined;
 	let page = "Home";
-	if(req.session.logged){
 	dp.find({},function(err,data){
 		let user = data
 		res.render("index.ejs",{name:req.session.userName,openPage:page,logged:req.session.logged,data1:user});
 	})
+})
+
+app.get('/admin',(req,res)=>{
+	if(req.session.logged === undefined){
+		req.session.clickAdmin = true;
+		res.redirect('/login');
 	}
 	else{
-		res.redirect("/login")
+		if(req.session.user == admin.user){
+			res.render("admin.ejs")
+		}
+		else{
+			res.send("You are not a admin please don't try to open Admin Panel otherwise your account will block");
+			return;
+		}
 	}
 })
+app.post('/admin',upload.single('productImg'),(req,res)=>{
+	let obj2 = {
+		inputText : req.body.product,
+		inputPrice : req.body.price,
+		picName : req.file.filename,
+		desc : req.body.description
+	}
+	let newDp = new dp(obj2);
+	newDp.save()
+res.send("Done");
+return;
+});
 
 app.route('/signUp').get(function(req, res){
 	if(req.session.logged != true){
@@ -101,7 +133,6 @@ app.route('/signUp').get(function(req, res){
 			})
 			if(flag == false){
 				let asd = new ap(req.body)
-				console.log(data);
 				asd.save();
 				res.sendFile(__dirname+"/thanks.html")
 				return;
@@ -111,23 +142,40 @@ app.route('/signUp').get(function(req, res){
 })
 
 app.route('/login').get(function(req, res){
-	if(req.session.logged != true){
+	if(!req.session.logged){
+
 		let page = "Login";
+		// res.redirect("/login");
 		res.render("index.ejs",{openPage:page,logged:"false"});
+		return;
 	}
 	else{
+		// console.log("gghbbj");
 		res.redirect("/")
 	}
 })
 .post(function(req,res){
 	loginFlag = false
 	let loginData = req.body;
+	if(req.session.logged === undefined && req.session.clickAdmin === true){
+		if(loginData.username === admin.user && loginData.password === admin.password){
+			req.session.logged = true;
+			req.session.userName = admin.name;
+			req.session.user = admin.user;
+			res.render("admin.ejs");
+		}
+		else{
+			res.send("Wrong Creditinal");
+		}
+		return;
+	}
 	ap.find({},function(err,data){
 		let newData = data;
 		newData.forEach(function(user){
 			if(user.username == loginData.username && user.password == loginData.password){
 				req.session.logged = true;
 				req.session.userName = user.name;
+				req.session.user = user.username;
 				loginFlag = true;
 				loginUser = user.name
 				let page = "Home"
@@ -158,9 +206,9 @@ app.get("/myAccount",function(req,res){
 })
 
 
-app.get("/getData",function(req,res){
-	dp.find({},function(err,data){
-		res.send(data);
+app.post("/getData",function(req,res){
+	dp.findOne({_id:req.body.key},function(err,data){
+		res.json(data.desc)
 	})
 })
 
@@ -214,29 +262,35 @@ app.post("/changePassword",function(req,res){
 })
 
 app.post("/addData",function(req,res){
-	let newHp = new hp();
-	newHp.userName = req.session.userName;
-	let newMp = new mp(req.body);
-	hp.findOne({userName:req.session.userName},function(err,cart){
-		if(!cart){
-			newHp.userProduct.push(newMp);
-			newHp.save();
-		}
-		else{
-			let duplicateFlag = false;
-			for(let i = 0;i<cart.userProduct.length;i++){
-				if(cart.userProduct[i].id1 == req.body.id1){
-					duplicateFlag = true;
+
+	if(req.session.logged === true){
+		let newHp = new hp();
+		newHp.userName = req.session.userName;
+		let newMp = new mp(req.body);
+		hp.findOne({userName:req.session.userName},function(err,cart){
+			if(!cart){
+				newHp.userProduct.push(newMp);
+				newHp.save();
+			}
+			else{
+				let duplicateFlag = false;
+				for(let i = 0;i<cart.userProduct.length;i++){
+					if(cart.userProduct[i].id1 == req.body.id1){
+						duplicateFlag = true;
+					}
+				}
+				if(!duplicateFlag){
+					newHp.userProduct.push(newMp);
+					cart.userProduct.push(newMp);
+					hp.updateOne({userName:req.session.userName},{userProduct:cart.userProduct},function(err,result){
+					})
 				}
 			}
-			if(!duplicateFlag){
-				newHp.userProduct.push(newMp);
-				cart.userProduct.push(newMp);
-				hp.updateOne({userName:req.session.userName},{userProduct:cart.userProduct},function(err,result){
-				})
-			}
-		}
-	})
+		})
+	}
+	else{
+		res.redirect("/login")
+	}
 	res.end();
 })
 
