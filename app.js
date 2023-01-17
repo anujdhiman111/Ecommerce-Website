@@ -317,20 +317,23 @@ app.post("/changeContent",function(req,res){
 		if(req.body.btn == "+"){
 			newData = data.userProduct;
 			newData.forEach(function(datas){
-				if(datas.id1 === `cart${req.body.id1}`){
+				// console.log(datas.id1 ,"===" ,req.body.id1)
+				if(datas.id1 === req.body.id1){
 					let oneUnit = Math.floor((parseInt(datas.price.slice(1)))/datas.quantity)
 					datas.quantity++;
+					// console.log()
 					Price = (parseInt(datas.price.slice(1)))+oneUnit
 					datas.price = `$${Price.toString()}`
 
 				}
 			})
+			// console.log(Price);
 			res.end(JSON.stringify({price:Price}))
 		}
 		else{
 			newData = data.userProduct;
 			newData.forEach(function(datas){
-				if(datas.id1 === `cart${req.body.id1}`){
+				if(datas.id1 === req.body.id1){
 					let oneUnit = Math.floor((parseInt(datas.price.slice(1)))/datas.quantity)
 					datas.quantity--;
 					Price = (parseInt(datas.price.slice(1))) - oneUnit
@@ -355,6 +358,57 @@ app.post("/deleteProduct",function(req,res){
 		})
 		hp.updateOne({userName:req.session.userName},{userProduct:newData},function(err,data){
 		})
+		res.end();
+	})
+})
+
+app.get("/getAllData",(req,res)=>{
+	dp.find({},function(err,data){
+		let newData = data
+		res.end(JSON.stringify({data:newData}));
+	})
+})
+
+app.post("/deleteItem",(req,res)=>{
+	dp.findOneAndDelete({_id:req.body.key},function(err,data){
+		console.log(err);
+	})
+	// let newHp = new hp();
+	hp.find({},function(err,data){
+		for(let x of data){
+			for(i in x.userProduct){
+				if(x.userProduct[i].id1 == req.body.key){
+					x.userProduct.splice(i,1);
+					hp.updateOne({userName : x.userName},{userProduct:x.userProduct},function(err,data){
+					})
+				}
+			}
+			
+		}
+		res.end();
+	})
+})
+
+app.post("/updatePrice",(req,res)=>{
+	console.log(req.body.key,req.body.updatePrice)
+	dp.updateOne({_id:req.body.key},{inputPrice:req.body.updatePrice},function(err,data){
+
+	})
+	hp.find({},function(err,data){
+		for(let x of data){
+			for(i in x.userProduct){
+				if(x.userProduct[i].id1 == req.body.key){
+					x.userProduct[i].price = req.body.updatePrice;
+					// let newData = data;
+					console.log(x.userProduct[i]);
+					hp.updateOne({userName : x.userName},{userProduct:x.userProduct},function(err,data){
+						console.log(data);
+					})
+					console.log(x.userProduct[i]);
+				}
+			}
+			
+		}
 		res.end();
 	})
 })

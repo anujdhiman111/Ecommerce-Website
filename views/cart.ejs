@@ -39,10 +39,9 @@
                 let request = new XMLHttpRequest();
                 request.open("POST","/changeContent");
                 request.setRequestHeader("Content-Type","application/json");
-                request.send(JSON.stringify({value:parseInt(inputElement.value),btn:"+",id1:event.target.id.slice(6)}));
+                request.send(JSON.stringify({value:parseInt(inputElement.value),btn:"+",id1:event.target.id.slice(2)}));
                 request.addEventListener("load",function(){
                 let data = JSON.parse(request.responseText);
-                console.log(data);
                     document.getElementById(`pg${event.target.id.slice(2)}`).innerText = `$${data.price}`
                 });
             }
@@ -50,11 +49,10 @@
                 let inputElement = document.getElementById(`id${event.target.id.slice(2)}`);
                 if(inputElement.value > 1){
                     inputElement.value--;
-                    console.log(inputElement.value)
                     let request = new XMLHttpRequest();
                     request.open("POST","/changeContent");
                     request.setRequestHeader("Content-Type","application/json");
-                    request.send(JSON.stringify({value:parseInt(inputElement.value),btn:"-",id1:event.target.id.slice(6)}));
+                    request.send(JSON.stringify({value:parseInt(inputElement.value),btn:"-",id1:event.target.id.slice(2)}));
                     request.addEventListener("load",function(){
                         let data = JSON.parse(request.responseText);
                         document.getElementById(`pg${event.target.id.slice(2)}`).innerText = `$${data.price}`
@@ -71,8 +69,6 @@
                 event.target.parentNode.parentNode.remove();
             })
         }
-
-
     </script>
 </body>
 </html>

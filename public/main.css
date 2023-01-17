@@ -137,3 +137,7 @@ form{
     padding: 10px 0px;
     margin-bottom: 5px;
 }
+
+.productSection{
+    display: none;
+}
